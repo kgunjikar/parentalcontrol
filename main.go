@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"sniffer/devices"
+	"sniffer/event"
+	"sniffer/logger"
 
-	"event"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
@@ -29,8 +31,11 @@ func main() {
 	fmt.Println("--= GoSniff =--")
 	fmt.Println("A simple packet sniffer in golang")
 
-	if !deviceExists(iface) {
-		log.Fatal("Unable to open device ", iface)
+	if err := devices.DeviceInit(); err != nil {
+		panic(err)
+	}
+	if err := logger.LoggerInit(); err != nil {
+		panic(err)
 	}
 	go event.Init()
 
@@ -97,19 +102,4 @@ func harvestHTTP(p gopacket.Packet) {
 		prev = now
 	}
 	fmt.Printf("\n")
-}
-
-func deviceExists(name string) bool {
-	devices, err := pcap.FindAllDevs()
-
-	if err != nil {
-		log.Panic(err)
-	}
-
-	for _, device := range devices {
-		if device.Name == name {
-			return true
-		}
-	}
-	return false
 }
