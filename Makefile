@@ -1,5 +1,6 @@
 all:
 	go fmt
+	go mod tidy
 	GOOS=linux go build -o main main.go
 debug:
 	go fmt

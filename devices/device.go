@@ -3,6 +3,7 @@ package devices
 import (
 	"github.com/google/gopacket/pcap"
 	"log"
+	"sniffer/config"
 )
 
 func deviceExists(name string) bool {
@@ -21,8 +22,8 @@ func deviceExists(name string) bool {
 }
 
 func DeviceInit() error {
-	if !deviceExists(config.IfName) {
-		log.Fatal("Unable to open device ", iface)
+	if !deviceExists(config.Config.IfName) {
+		log.Fatal("Unable to open device ", config.Config.IfName)
 	}
 	return nil
 }

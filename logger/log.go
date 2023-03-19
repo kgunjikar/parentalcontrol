@@ -1,26 +1,22 @@
 package logger
 
 import (
-	"encoding/json"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"time"
 )
 
 var Log *zap.SugaredLogger
 
 func LoggerInit() error {
-	rawJSONConfig := []byte{
-		"level": "info",
-		"encoderConfig": {
-			"timeEncoder": "iso8601",
-		},
-	}
-	config := zap.Config()
-	if err := json.Unmarshal(rawJSONConfig, &config); err != nil {
-		return err
-	}
+	config := zap.NewProductionConfig()
+
+	config.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.RFC3339)
+
 	logger, err := config.Build()
 	if err != nil {
 		return err
 	}
-	Log = logger.SugaredLogger()
+	Log = logger.Sugar()
+	return nil
 }
