@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "Web Traffic Monitor",
+    "version": "1.0",
+    "permissions": [
+        "webRequest",
+        "storage",
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
+}
